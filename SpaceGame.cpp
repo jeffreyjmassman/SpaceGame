@@ -109,14 +109,17 @@ void SpaceGame::game() {
                 frameUpdate();
             }
             counter  = (counter + 1) % 600; // change this
+            if (gameOver) {
+                printGameOver();
+            }
+            else {
+                levelUpdate();
+            }
             // ~60 fps, roughly
             std::this_thread::sleep_for(std::chrono::milliseconds(1000/60)); 
         }
         else {
-            if ((ch = getch()) == ERR) {
-                //frameUpdate();
-            }
-            else {
+            if ((ch = getch()) != ERR) {
                 keyRoute(ch);
             }
             if (bossMusicCounter == 0) {
@@ -197,6 +200,12 @@ void SpaceGame::game() {
             }
             counter  = (counter + 1) % 600;
             bossMusicCounter = (bossMusicCounter + 1) % 4260; // roughly 86 seconds; duration of the song
+            if (gameOver) {
+                printGameOver();
+            }
+            else {
+                levelUpdate();
+            }
             // ~60 fps, roughly
             std::this_thread::sleep_for(std::chrono::milliseconds(1000/60)); 
         }
@@ -424,10 +433,11 @@ void SpaceGame::enemyMoveUpdate() {
             lives--;
             iframes = 48;
             if (!lives) {
-                printGameOver();
+                // printGameOver();
+                gameOver = true;
                 return;
             }
-            frameUpdate();
+            // frameUpdate();
         }
     }   
 }
@@ -760,8 +770,8 @@ void SpaceGame::enemyProjectileCollisionUpdate() {
                 if (!isBossLevel) {
                     levelScore++;
                 }
-                frameUpdate();
-                levelUpdate();
+                // frameUpdate();
+                // levelUpdate();
                 break;
             }
             else {
@@ -785,10 +795,10 @@ void SpaceGame::bossMissileCollisionUpdate() {
             boss[2] -= 1;
             numHits++;
             bossDrawFrames = 36;
-            frameUpdate();
+            // frameUpdate();
             if (boss[2] == 0) {
                 bossExplosionAnimation();
-                levelUpdate();
+                // levelUpdate();
             }
             return;
         }
@@ -798,10 +808,10 @@ void SpaceGame::bossMissileCollisionUpdate() {
             boss[2] -= 1;
             numHits++;
             bossDrawFrames = 36;
-            frameUpdate();
+            // frameUpdate();
             if (boss[2] == 0) {
                 bossExplosionAnimation();
-                levelUpdate();
+                // levelUpdate();
             }
             return;
         }
@@ -811,10 +821,10 @@ void SpaceGame::bossMissileCollisionUpdate() {
             boss[2] -= 1;
             numHits++;
             bossDrawFrames = 36;
-            frameUpdate();
+            // frameUpdate();
             if (boss[2] == 0) {
                 bossExplosionAnimation();
-                levelUpdate();
+                // levelUpdate();
             }
             return;
         }
@@ -832,7 +842,7 @@ void SpaceGame::enemyMissileCollisionUpdate() {
                 it = enemies.erase(it);
                 score++;
                 enemiesKilled++;
-                frameUpdate();
+                // frameUpdate();
             }
             else {
                 it++;
@@ -851,9 +861,10 @@ void SpaceGame::shipBossMissileCollisionUpdate() {
             }
             bossShotMissile = false;
             bossMissile.clear();
-            frameUpdate();
+            // frameUpdate();
             if (!lives) {
-                printGameOver();
+                // printGameOver();
+                gameOver = true;
                 return;
             }
         }
@@ -871,9 +882,10 @@ void SpaceGame::shipBossProjectileCollisionUpdate() {
                 lives--;
                 iframes = 48;
             }
-            frameUpdate();
+            // frameUpdate();
             if (!lives) {
-                printGameOver();
+                // printGameOver();
+                gameOver = true;
                 return;
             }
         }
@@ -896,9 +908,10 @@ void SpaceGame::shipEnemyCollisionUpdate() {
                 lives--;
                 iframes = 48;
             }
-            frameUpdate();
+            // frameUpdate();
             if (!lives) {
-                printGameOver();
+                // printGameOver();
+                gameOver = true;
                 return;
             }
         }
@@ -923,8 +936,8 @@ void SpaceGame::enemyPowerupCollisionUpdate() {
                     levelScore++;
                 }
                 system("afplay Sounds/Explosion.mp3 >/dev/null 2>&1 &");
-                frameUpdate();
-                levelUpdate();
+                // frameUpdate();
+                // levelUpdate();
             }
             else {
                 it++;
@@ -935,7 +948,7 @@ void SpaceGame::enemyPowerupCollisionUpdate() {
                 auto projectile = (*it);
                 if (abs(xcheck - projectile[0]) <= 2) {
                     it = bossProjectiles.erase(it);
-                    frameUpdate();
+                    // frameUpdate();
                 }
                 else {
                     it++;
@@ -944,7 +957,7 @@ void SpaceGame::enemyPowerupCollisionUpdate() {
             if (bossShotMissile) {
                 if (abs(xcheck - bossMissile[0]) <= 2) {
                     bossMissile.clear();
-                    frameUpdate();
+                    // frameUpdate();
                     bossShotMissile = false;
                 }
             }
@@ -1351,7 +1364,7 @@ void SpaceGame::enterInitials() {
 void SpaceGame::printGameOver() {
     system("killall afplay");
     system("afplay Sounds/Game_Over.mp3 >/dev/null 2>&1 &");
-    gameOver = true;
+    // gameOver = true;
     mvprintw(midh - 2, midw - 6, "GAME OVER");
     mvprintw(midh, midw - 6, "Score: ");
     mvprintw(midh, midw + 1, "%d", score);
