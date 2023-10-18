@@ -195,7 +195,7 @@ void SpaceGame::game() {
             if (!missile.empty()) {
                 missileMoveUpdate();
             }
-            if (keepPlaying) {
+            if (keepPlaying && boss[2] != 0) {
                 frameUpdate();
             }
             counter  = (counter + 1) % 600;
@@ -221,8 +221,8 @@ void SpaceGame::frameUpdate() {
     clear();
     mvprintw(0,0, "Score: ");
     mvprintw(0,7, "%d", score);
-    mvprintw(0, 11, "Level: ");
-    mvprintw(0, 18, "%d", level);
+    mvprintw(0, 12, "Level: ");
+    mvprintw(0, 19, "%d", level);
     if (!isBossLevel) {
         mvprintw(0,116, "Remaining: ");
         mvprintw(0,127, "%d", 5*level - levelScore);
@@ -242,7 +242,7 @@ void SpaceGame::frameUpdate() {
             enemy[2] -= 1;
         }
     }
-    int powerupidx = 23;
+    int powerupidx = 24;
     for (int i = 0; i < lives; i++) {
         mvprintw(0,21 + 3*i, "<3");
         powerupidx += 3;
@@ -1497,9 +1497,9 @@ void SpaceGame::printScores() {
         for (auto const & row : scores) {
             auto rowName = row[0].c_str();
             auto rowScore = row[1].c_str();
-            mvprintw(midh - 6 + idx, midw - 3, rowName);
-            mvprintw(midh - 6 + idx, midw, ":");
-            mvprintw(midh - 6 + idx, midw + 2, rowScore);
+            mvprintw(midh - 6 + idx, midw - 7, rowName);
+            // mvprintw(midh - 6 + idx, midw, ":");
+            mvprintw(midh - 6 + idx, midw + 3, rowScore);
             idx++;
         }
         mvprintw(midh - 4 + idx, midw - 11, "Press any key to exit.");
@@ -1509,9 +1509,9 @@ void SpaceGame::printScores() {
         int idx = 0;
         while (idx < names.size()) {
             auto name = names[idx].c_str();
-            mvprintw(midh + idx, midw - 3, name);
-            mvprintw(midh + idx, midw, ":");
-            mvprintw(midh + idx, midw + 2, "%d", highScores[idx]);
+            mvprintw(midh + idx, midw - 7, name);
+            // mvprintw(midh + idx, midw, ":");
+            mvprintw(midh + idx, midw + 3, "%d", highScores[idx]);
             idx++;
         }
         mvprintw(midh + 2 + idx, midw - 11, "Press any key to exit.");
@@ -1548,9 +1548,9 @@ void SpaceGame::printEndGame() {
         for (auto const & row : scores) {
             auto rowName = row[0].c_str();
             auto rowScore = row[1].c_str();
-            mvprintw(midh - 4 + idx, midw - 3, rowName);
-            mvprintw(midh - 4 + idx, midw, ":");
-            mvprintw(midh - 4 + idx, midw + 2, rowScore);
+            mvprintw(midh - 4 + idx, midw - 7, rowName);
+            // mvprintw(midh - 4 + idx, midw, ":");
+            mvprintw(midh - 4 + idx, midw + 3, rowScore);
             idx++;
         }
         mvprintw(midh - 2 + idx, midw - 11, "Press any key to quit.");
@@ -1560,9 +1560,9 @@ void SpaceGame::printEndGame() {
         int idx = 0;
         while (idx < names.size()) {
             auto name = names[idx].c_str();
-            mvprintw(midh + idx, midw - 4, name);
-            mvprintw(midh + idx, midw - 1, ":");
-            mvprintw(midh + idx, midw + 1, "%d", highScores[idx]);
+            mvprintw(midh + idx, midw - 7, name);
+            // mvprintw(midh + idx, midw - 1, ":");
+            mvprintw(midh + idx, midw + 3, "%d", highScores[idx]);
             idx++;
         }
         mvprintw(midh + 2 + idx, midw - 11, "Press any key to quit.");
