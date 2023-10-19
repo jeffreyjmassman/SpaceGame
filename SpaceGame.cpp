@@ -244,7 +244,7 @@ void SpaceGame::frameUpdate() {
     }
     int powerupidx = 24;
     for (int i = 0; i < lives; i++) {
-        mvprintw(0,21 + 3*i, "<3");
+        mvprintw(0,22 + 3*i, "<3");
         powerupidx += 3;
     }
     if (playerHasPowerup) {
@@ -1009,6 +1009,8 @@ void SpaceGame::bossDamageAnimation() {
 
 void SpaceGame::bossExplosionAnimation() {
     system("killall afplay");
+    printBossHealthBar();
+    refresh();
     mvprintw(boss[1], boss[0] - 6,"<=&=&===&===");
     mvprintw(boss[1] - 1, boss[0] - 1, "<=&==&=&=");
     mvprintw(boss[1] + 1, boss[0] - 1, "<==&===");
@@ -1505,7 +1507,7 @@ void SpaceGame::printScores() {
         mvprintw(midh - 4 + idx, midw - 11, "Press any key to exit.");
     }
     else {
-        mvprintw(midh - 2, midw - 5, "High Scores:");
+        mvprintw(midh - 2, midw - 6, "High Scores:");
         int idx = 0;
         while (idx < names.size()) {
             auto name = names[idx].c_str();
