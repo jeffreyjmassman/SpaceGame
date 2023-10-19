@@ -242,7 +242,7 @@ void SpaceGame::frameUpdate() {
             enemy[2] -= 1;
         }
     }
-    int powerupidx = 24;
+    int powerupidx = 23;
     for (int i = 0; i < lives; i++) {
         mvprintw(0,22 + 3*i, "<3");
         powerupidx += 3;
