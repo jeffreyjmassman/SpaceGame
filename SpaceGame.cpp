@@ -116,7 +116,7 @@ void SpaceGame::game() {
                 levelUpdate();
             }
             // ~60 fps, roughly
-            std::this_thread::sleep_for(std::chrono::milliseconds(1000/60)); 
+            std::this_thread::sleep_for(std::chrono::milliseconds(1000/60));
         }
         else {
             if ((ch = getch()) != ERR) {
@@ -307,11 +307,17 @@ void SpaceGame::keyRoute(int ch) {
         if (isNewHighScore()) {
             highScoreUpdate();
         }
+        else if (online) {
+            enterInitials();
+        }
         printEndGame();
     }
     else if (ch == 101 && gameOver) {
         if (isNewHighScore()) {
             highScoreUpdate();
+        }
+        else if (online) {
+            enterInitials();
         }
         printScores();
         initialize();
@@ -795,7 +801,7 @@ void SpaceGame::bossMissileCollisionUpdate() {
             boss[2] -= 1;
             numHits++;
             bossDrawFrames = 36;
-            // frameUpdate();
+            frameUpdate();
             if (boss[2] == 0) {
                 bossExplosionAnimation();
                 // levelUpdate();
@@ -808,7 +814,7 @@ void SpaceGame::bossMissileCollisionUpdate() {
             boss[2] -= 1;
             numHits++;
             bossDrawFrames = 36;
-            // frameUpdate();
+            frameUpdate();
             if (boss[2] == 0) {
                 bossExplosionAnimation();
                 // levelUpdate();
@@ -821,7 +827,7 @@ void SpaceGame::bossMissileCollisionUpdate() {
             boss[2] -= 1;
             numHits++;
             bossDrawFrames = 36;
-            // frameUpdate();
+            frameUpdate();
             if (boss[2] == 0) {
                 bossExplosionAnimation();
                 // levelUpdate();
@@ -1009,8 +1015,6 @@ void SpaceGame::bossDamageAnimation() {
 
 void SpaceGame::bossExplosionAnimation() {
     system("killall afplay");
-    printBossHealthBar();
-    refresh();
     mvprintw(boss[1], boss[0] - 6,"<=&=&===&===");
     mvprintw(boss[1] - 1, boss[0] - 1, "<=&==&=&=");
     mvprintw(boss[1] + 1, boss[0] - 1, "<==&===");
