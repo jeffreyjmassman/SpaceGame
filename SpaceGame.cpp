@@ -1339,6 +1339,7 @@ void SpaceGame::highScoreUpdate() {
 }
 
 void SpaceGame::enterInitials() {
+    clear();
     printLogo();
     mvprintw(midh - 2, midw - 29, "Enter your initials below to keep a record of your score.");
     mvprintw(midh, midw - 14, "Type in a 3 letter name: ");
