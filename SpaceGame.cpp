@@ -1062,8 +1062,14 @@ void SpaceGame::bossExplosionAnimation() {
     refresh();
     std::this_thread::sleep_for(std::chrono::milliseconds(2000));
     system("afplay Sounds/Boss_Defeated_v1.mp3 >/dev/null 2>&1 &");
-    mvprintw(HEIGHT / 2, WIDTH / 2 - 12, "Boss defeated! +   Score");
-    mvprintw(HEIGHT / 2, WIDTH / 2 + 4, "%d", 10*(level/2));
+    if (level < 20) {
+        mvprintw(HEIGHT / 2, WIDTH / 2 - 12, "Boss defeated! +   Score");
+        mvprintw(HEIGHT / 2, WIDTH / 2 + 4, "%d", 10*(level/2));
+    }
+    else {
+        mvprintw(HEIGHT / 2, WIDTH / 2 - 12, "Boss defeated! +    Score");
+        mvprintw(HEIGHT / 2, WIDTH / 2 + 4, "%d", 10*(level/2));
+    }
     refresh();
     std::this_thread::sleep_for(std::chrono::milliseconds(2500));
     mvprintw(HEIGHT / 2 - 2, WIDTH / 2 - 12, "                        ");
@@ -1132,6 +1138,7 @@ void SpaceGame::initialize() {
     enemiesKilled = 0;
     bossesKilled = 0;
     accuracy = 0;
+    numHits = 0;
     nodelay(stdscr, TRUE);
 }
 
@@ -1393,7 +1400,7 @@ void SpaceGame::printGameOver() {
     int ch;
     while (1) {
         ch = getch();
-        if (ch == 113 || ch == 101) {
+        if (ch == 113 || ch == 101) { //d
             keyRoute(ch);
             break;
         }
@@ -1484,8 +1491,11 @@ void SpaceGame::printNewLevel() {
         if (level == 1) {
             mvprintw(midh, midw - 6, "enemies to advance.");
         }
-        else {
+        else if (level < 20) {
             mvprintw(midh, midw - 5, "enemies to advance.");
+        }
+        else {
+            mvprintw(midh, midw - 4, "enemies to advance.");
         }
         refresh();
         std::this_thread::sleep_for(std::chrono::milliseconds(3000));
