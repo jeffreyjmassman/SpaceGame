@@ -335,7 +335,6 @@ void SpaceGame::keyRoute(int ch) {
     else if (!gameStarted) {
         if (ch == 121) {
             establishDatabaseConnection();
-            online = true;
             gameStarted = true;
         }
         if (ch == 110) {
@@ -1606,6 +1605,7 @@ void SpaceGame::establishDatabaseConnection() {
         clear();
         mvprintw(midh, midw - 18, "Connection established successfully!");
         refresh();
+        online = true;
         std::this_thread::sleep_for(std::chrono::milliseconds(1500));
     }
     catch (const std::exception& e) {
